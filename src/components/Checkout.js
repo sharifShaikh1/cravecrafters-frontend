@@ -37,7 +37,8 @@ function CheckoutForm() {
   useEffect(() => {
     const handleSessionCheck = () => {
       const id = searchParams.get('session_id') || new URLSearchParams(location.search).get('session_id');
-      console.log('Session check:', { id, url: location.href, token });
+     if (id){console.log('Session check:', { id, url: location.href, token });
+      } 
       if (id && token && !sessionId) {
         setSessionId(id);
         handlePaymentSuccess(id);
@@ -45,11 +46,11 @@ function CheckoutForm() {
     };
 
     handleSessionCheck();
-    const interval = setInterval(handleSessionCheck, 1000);
+    
     window.addEventListener('popstate', handleSessionCheck);
 
     return () => {
-      clearInterval(interval);
+     
       window.removeEventListener('popstate', handleSessionCheck);
     };
   }, [searchParams, token, navigate, location, sessionId]);
