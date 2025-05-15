@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useSearchParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
-axios.defaults.baseURL = 'http://localhost:5000';
+axios.defaults.baseURL = 'https://cravecrafters-backend.onrender.com';
 
 function Orders() {
   const [orders, setOrders] = useState([]);
