@@ -20,7 +20,7 @@ function Profile() {
       }
 
       try {
-        const response = await axios.get('http://localhost:5000/api/auth/profile', {
+        const response = await axios.get('https://cravecrafters-backend.onrender.com/api/auth/profile', {
           headers: { Authorization: `Bearer ${token}` },
         });
         setUser(response.data);
