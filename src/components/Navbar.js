@@ -38,10 +38,10 @@ function Navbar() {
       setLoading(true);
       try {
         const [productsResponse, categoriesResponse] = await Promise.all([
-          axios.get('http://localhost:5000/api/products', {
+          axios.get('https://cravecrafters-backend.onrender.com/api/products', {
             headers: { Authorization: `Bearer ${token}` },
           }),
-          axios.get('http://localhost:5000/api/categories', {
+          axios.get('https://cravecrafters-backend.onrender.com/api/categories', {
             headers: { Authorization: `Bearer ${token}` },
           }),
         ]);
