@@ -3,7 +3,7 @@ import { Elements } from '@stripe/react-stripe-js';
 import { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams, useLocation } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import api from '../api'; // Import the configured Axios instance
+import api from './api'; // Import the configured Axios instance
 
 const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY);
 
