@@ -24,7 +24,7 @@ function Cart() {
     }
     try {
       setLoading(true);
-      const { data } = await axios.get('http://localhost:5000/api/cart', {
+      const { data } = await axios.get('https://cravecrafters-backend.onrender.com/api/cart', {
         headers: { Authorization: `Bearer ${token}` },
         timeout: 10000,
       });
@@ -41,7 +41,7 @@ function Cart() {
   const updateQuantity = useCallback(async (productId, quantity) => {
     if (!token || quantity < 0) return;
     try {
-      const { data } = await axios.put('http://localhost:5000/api/cart/update', { productId, quantity }, {
+      const { data } = await axios.put('https://cravecrafters-backend.onrender.com/api/cart/update', { productId, quantity }, {
         headers: { Authorization: `Bearer ${token}` },
         timeout: 10000,
       });
@@ -57,7 +57,7 @@ function Cart() {
   const clearCart = async () => {
     if (!token) return;
     try {
-      await axios.delete('http://localhost:5000/api/cart', {
+      await axios.delete('https://cravecrafters-backend.onrender.com/api/cart', {
         headers: { Authorization: `Bearer ${token}` },
         timeout: 10000,
       });
