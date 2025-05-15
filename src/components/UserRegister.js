@@ -19,7 +19,7 @@ function UserRegister() {
     e.preventDefault();
     try {
       console.log('Registering:', formData);
-      const res = await axios.post('http://localhost:5000/register', formData);
+      const res = await axios.post('https://cravecrafters-backend.onrender.com/register', formData);
       console.log('Register response:', res.data);
       localStorage.setItem('token', res.data.token);
       toast.success('Registered successfully!');
