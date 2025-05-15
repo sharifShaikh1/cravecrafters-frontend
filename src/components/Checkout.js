@@ -1,9 +1,9 @@
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js';
-import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams, useLocation } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import api from '../api'; // Import the configured Axios instance
 
 const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY);
 
@@ -20,8 +20,7 @@ function CheckoutForm() {
     const fetchProfile = async () => {
       if (token) {
         try {
-          const { data } = await axios.get('https://cravecrafters-backend.onrender.com/api/auth/profile', {
-            headers: { Authorization: `Bearer ${token}` },
+          const { data } = await api.get('/api/auth/profile', {
             timeout: 10000,
           });
           setProfile(data);
@@ -37,8 +36,9 @@ function CheckoutForm() {
   useEffect(() => {
     const handleSessionCheck = () => {
       const id = searchParams.get('session_id') || new URLSearchParams(location.search).get('session_id');
-     if (id){console.log('Session check:', { id, url: location.href, token });
-      } 
+      if (id) {
+        console.log('Session check:', { id, url: location.href, token });
+      }
       if (id && token && !sessionId) {
         setSessionId(id);
         handlePaymentSuccess(id);
@@ -46,11 +46,9 @@ function CheckoutForm() {
     };
 
     handleSessionCheck();
-    
     window.addEventListener('popstate', handleSessionCheck);
 
     return () => {
-     
       window.removeEventListener('popstate', handleSessionCheck);
     };
   }, [searchParams, token, navigate, location, sessionId]);
@@ -60,18 +58,12 @@ function CheckoutForm() {
     for (let attempt = 1; attempt <= 3; attempt++) {
       try {
         console.log(`Attempt ${attempt}, calling /success with:`, id);
-        const response = await axios.get(`https://cravecrafters-backend.onrender.com/api/payment/success?session_id=${encodeURIComponent(id)}`, {
-          headers: { Authorization: `Bearer ${token}` },
+        const response = await api.get(`/api/payment/success?session_id=${encodeURIComponent(id)}`, {
           timeout: 10000,
         });
         console.log('Success response:', response.data);
-        if (response.data.redirectUrl) {
-          navigate(response.data.redirectUrl); // Redirect after success
-          toast.success('Checkout and stock update successful!');
-          break;
-        } else {
-          toast.error('No redirect URL');
-        }
+        toast.success('Checkout and stock update successful!');
+        break;
       } catch (err) {
         console.error(`Attempt ${attempt} failed:`, err.response?.data || err.message);
         toast.error(`Error: ${err.response?.data?.message || err.message}`);
@@ -101,8 +93,7 @@ function CheckoutForm() {
 
     setLoading(true);
     try {
-      const { data } = await axios.post('https://cravecrafters-backend.onrender.com/api/payment/create-checkout-session', {}, {
-        headers: { Authorization: `Bearer ${token}` },
+      const { data } = await api.post('/api/payment/create-checkout-session', {}, {
         timeout: 10000,
       });
       if (!data.id) throw new Error('No session ID');
@@ -123,17 +114,32 @@ function CheckoutForm() {
       <button
         type="submit"
         disabled={loading || !profile?.username || !profile?.address?.street}
-        className={`w-full py-2 rounded ${loading || !profile?.username || !profile?.address?.street ? 'bg-gray-400' : 'bg-blue-600 text-white hover:bg-blue-700'}`}
+        className={`w-full py-2 rounded ${
+          loading || !profile?.username || !profile?.address?.street
+            ? 'bg-gray-400'
+            : 'bg-blue-600 text-white hover:bg-blue-700'
+        }`}
       >
         {loading ? 'Processing...' : 'Pay Now'}
       </button>
-      {sessionId && !loading && <button onClick={() => handlePaymentSuccess(sessionId)} className="mt-2 w-full bg-green-500 text-white py-2 rounded">Retry Now</button>}
+      {sessionId && !loading && (
+        <button
+          onClick={() => handlePaymentSuccess(sessionId)}
+          className="mt-2 w-full bg-green-500 text-white py-2 rounded"
+        >
+          Retry Now
+        </button>
+      )}
     </form>
   );
 }
 
 function Checkout() {
-  return <Elements stripe={stripePromise}><CheckoutForm /></Elements>;
+  return (
+    <Elements stripe={stripePromise}>
+      <CheckoutForm />
+    </Elements>
+  );
 }
 
 export default Checkout;
