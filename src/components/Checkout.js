@@ -20,7 +20,7 @@ function CheckoutForm() {
     const fetchProfile = async () => {
       if (token) {
         try {
-          const { data } = await axios.get('http://localhost:5000/api/auth/profile', {
+          const { data } = await axios.get('https://cravecrafters-backend.onrender.com/api/auth/profile', {
             headers: { Authorization: `Bearer ${token}` },
             timeout: 10000,
           });
