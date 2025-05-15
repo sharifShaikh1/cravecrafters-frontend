@@ -51,7 +51,7 @@ function Profile() {
 
     try {
       const response = await axios.put(
-        'https://cravecrafters-frontend.onrender.com/api/auth/update-profile',
+        'https://cravecrafters-backend.onrender.com/api/auth/update-profile',
         { username: user.username, address: user.address },
         { headers: { Authorization: `Bearer ${token}` } }
       );
