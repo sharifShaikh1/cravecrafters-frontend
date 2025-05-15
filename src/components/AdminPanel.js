@@ -3,7 +3,7 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import AdminOrders from './AdminOrders';
 
-axios.defaults.baseURL = 'http://localhost:5000';
+axios.defaults.baseURL = 'https://cravecrafters-backend.onrender.com';
 
 const AdminPanel = () => {
   const [products, setProducts] = useState([]);
