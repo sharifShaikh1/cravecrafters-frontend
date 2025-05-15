@@ -59,7 +59,7 @@ function CheckoutForm() {
     for (let attempt = 1; attempt <= 3; attempt++) {
       try {
         console.log(`Attempt ${attempt}, calling /success with:`, id);
-        const response = await axios.get(`/api/payment/success?session_id=${encodeURIComponent(id)}`, {
+        const response = await axios.get(`https://cravecrafters-backend.onrender.com/api/payment/success?session_id=${encodeURIComponent(id)}`, {
           headers: { Authorization: `Bearer ${token}` },
           timeout: 10000,
         });
@@ -100,7 +100,7 @@ function CheckoutForm() {
 
     setLoading(true);
     try {
-      const { data } = await axios.post('/api/payment/create-checkout-session', {}, {
+      const { data } = await axios.post('https://cravecrafters-backend.onrender.com/api/payment/create-checkout-session', {}, {
         headers: { Authorization: `Bearer ${token}` },
         timeout: 10000,
       });
