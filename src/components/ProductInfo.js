@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 
-axios.defaults.baseURL = 'http://localhost:5000';
+axios.defaults.baseURL = 'https://cravecrafters-backend.onrender.com';
 
 const ProductInfo = () => {
   const { id } = useParams();
